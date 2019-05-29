@@ -91,8 +91,6 @@ void loop()
   convertData();
   get_accel_gyro_angles();
   sensor_Fusion();
-  getFSRvoltage();
-  getResistance();
   printData();
  
 }
@@ -193,10 +191,10 @@ void convertData()
 void get_sampleRate()
 {
    sampleRate = Gyro_Output_Rate / (1 + SMPLRT_DIV_Value );
-  //sample rate is 40 hertz 
+  //sample rate is 52 hertz 
 
-  dT = 1/sampleRate;
-  //dT = 25ms
+  //dT = 1/sampleRate;
+  //dT = 19ms
 
 }
 
@@ -210,14 +208,7 @@ void get_accel_gyro_angles()
   angle_AY = atan2( AY , sqrt (AX*AX + AZ*AZ)  ) * rads_to_degrees;
   angle_AZ = 0; //Accelerometer does not give AZ readings
 
-/*
- angle_AX = atan(-1*AX/sqrt(pow(AY,2) + pow(AZ,2)))*rads_to_degrees;
-  angle_AY = atan(AY/sqrt(pow(AX,2) + pow(AZ,2)))*rads_to_degrees;
-*/
-/*
-   angle_AX = atan(-1*AY/sqrt(pow(AX,2) + pow(AZ,2)))*rads_to_degrees;
-  angle_AY = atan(AX/sqrt(pow(AY,2) + pow(AZ,2)))*rads_to_degrees;
-*/
+
 
 
 
@@ -255,35 +246,17 @@ void printData()
 
 
     Serial.println(PITCH);
-
-  if(BTSerial.available() > 0)//if data available for bluetooth is greater than 0
-  {
-       
-        BTSerial.println(PITCH);
-/*
-        BTSerial.print ("\t\t\t");
-
-        // The voltage = Vcc * R / (R + FSR) where R = 10K and Vcc = 5V
-        // so FSR = ((Vcc - V) * R) / V        yay math!
-        
-           if(fsrResistance >= 6000000)
-                  {
-                      fsrResistance = 0;
-                      BTSerial.println(fsrResistance); 
-                    
-                  }
-           else
+  
+        if(BTSerial.available() > 0)//if data available for bluetooth is greater than 0
                 {
-                  BTSerial.print(fsrReading);
-                  BTSerial.print("\t\t\t");
-                  BTSerial.print(fsrVoltage);
-                  BTSerial.print("\t\t\t");
-                  BTSerial.println(fsrResistance);
-                  
-                } */
-        delay(50); 
- 
-  }
+                     
+                      BTSerial.println(PITCH);
+              
+                } 
+              delay(50); 
+       
+        }
+  
   
 }
 
